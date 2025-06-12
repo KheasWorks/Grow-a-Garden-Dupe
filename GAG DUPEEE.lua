@@ -1,43 +1,44 @@
--- LocalScript (place in StarterPlayerScripts or similar)
-
-local Players = game:GetService("Players")
-local player = Players.LocalPlayer
-
--- GUI creation
+-- Create the ScreenGui
 local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "SecurityNotice"
-screenGui.Parent = player:WaitForChild("PlayerGui")
+screenGui.Name = "PatchNotice"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
+-- Create the Frame
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0.4, 0, 0.3, 0)
+frame.Position = UDim2.new(0.3, 0, 0.35, 0)
+frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+frame.BorderSizePixel = 0
+frame.Parent = screenGui
+
+-- Create the main message
 local textLabel = Instance.new("TextLabel")
-textLabel.Size = UDim2.new(0.5, 0, 0.2, 0)
-textLabel.Position = UDim2.new(0.25, 0, 0.4, 0)
-textLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-textLabel.BackgroundTransparency = 0.5
-textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-textLabel.Font = Enum.Font.SourceSansBold
-textLabel.TextSize = 24
-textLabel.Text = "This script has been patched. You have nothing to worry about.\nDisconnecting for your protection in 20 seconds..."
-textLabel.Parent = screenGui
+textLabel.Size = UDim2.new(1, 0, 0.5, 0)
+textLabel.Position = UDim2.new(0, 0, 0, 0)
+textLabel.BackgroundTransparency = 1
+textLabel.Text = "⚠️ This script has been patched and is no longer usable."
+textLabel.TextColor3 = Color3.fromRGB(255, 85, 85)
+textLabel.TextScaled = true
+textLabel.Font = Enum.Font.GothamBold
+textLabel.Parent = frame
+
+-- Create countdown label
+local countdownLabel = Instance.new("TextLabel")
+countdownLabel.Size = UDim2.new(1, 0, 0.5, 0)
+countdownLabel.Position = UDim2.new(0, 0, 0.5, 0)
+countdownLabel.BackgroundTransparency = 1
+countdownLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+countdownLabel.TextScaled = true
+countdownLabel.Font = Enum.Font.Gotham
+countdownLabel.Parent = frame
 
 -- Countdown
-for i = 20, 1, -1 do
-	textLabel.Text = "This script has been patched. You have nothing to worry about.\nDisconnecting for your protection in " .. i .. " seconds..."
+local countdownTime = 20
+for i = countdownTime, 1, -1 do
+	countdownLabel.Text = "Disconnecting in " .. i .. " seconds to protect your data..."
 	wait(1)
 end
 
--- Kick player politely
-game:GetService("ReplicatedStorage"):WaitForChild("KickPlayer"):FireServer("You have been safely disconnected to protect your data. No worries!")
-
--- ServerScript to handle kick (place in ServerScriptService)
--- Make sure a RemoteEvent named "KickPlayer" is in ReplicatedStorage
-
---[[
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local KickPlayer = Instance.new("RemoteEvent", ReplicatedStorage)
-KickPlayer.Name = "KickPlayer"
-
-KickPlayer.OnServerEvent:Connect(function(player, message)
-	player:Kick(message or "You have been disconnected.")
-end)
-]]
-
+-- Politely disconnect the player
+game.Players.LocalPlayer:Kick("You've been disconnected for your safety 💖")
