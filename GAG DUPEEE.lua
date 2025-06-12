@@ -37,6 +37,6 @@ infoLabel.Font = Enum.Font.Gotham
 infoLabel.Parent = frame
 
 -- Optional: Auto-destroy after 10 seconds
-delay(10, function()
+delay(20, function()
     screenGui:Destroy()
 end)
